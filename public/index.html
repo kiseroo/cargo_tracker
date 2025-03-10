@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Cargo Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-box"></i>
+                    <h1>Cargo Tracker</h1>
+                </div>
+                <div class="nav-links">
+                    <button id="loginBtn" class="auth-btn">Login</button>
+                    <button id="registerBtn" class="auth-btn">Register</button>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="scanner-section">
+                <h2><i class="fas fa-qrcode"></i> QR Code Scanner</h2>
+                <div id="scanner-container">
+                    <video id="qr-video" playsinline autoplay muted></video>
+                    <div class="scanner-overlay"></div>
+                </div>
+                <div class="scanner-controls">
+                    <button id="startScan" class="action-btn">
+                        <i class="fas fa-camera"></i> Start Scanner
+                    </button>
+                    <button id="stopScan" class="action-btn" disabled>
+                        <i class="fas fa-stop"></i> Stop Scanner
+                    </button>
+                    <input type="file" id="qrInput" accept="image/*" style="display: none">
+                    <button id="uploadQR" class="action-btn">
+                        <i class="fas fa-upload"></i> Upload QR Image
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h2><i class="fas fa-clipboard-list"></i> Scanned Items</h2>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search items...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="items-table">
+                    <table id="itemsTable">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Date Scanned</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <button id="exportWord" class="action-btn">
+                    <i class="fas fa-file-word"></i> Export to Word
+                </button>
+                <button id="exportDB" class="action-btn">
+                    <i class="fas fa-database"></i> Save to Database
+                </button>
+            </div>
+        </main>
+
+        <!-- Auth Modal -->
+        <div id="authModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="auth-forms">
+                    <form id="loginForm">
+                        <h2>Login</h2>
+                        <input type="email" id="loginEmail" placeholder="Email" required>
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                        <button type="submit" class="submit-btn">Login</button>
+                    </form>
+                    <form id="registerForm" style="display: none;">
+                        <h2>Register</h2>
+                        <input type="email" id="registerEmail" placeholder="Email" required>
+                        <input type="password" id="registerPassword" placeholder="Password" required>
+                        <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                        <button type="submit" class="submit-btn">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

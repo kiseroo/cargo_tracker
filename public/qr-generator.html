@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo QR Code Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f6fa;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #qrcode {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cargo QR Code Generator</h1>
+        <div class="form-group">
+            <label for="cargoId">Cargo ID (optional):</label>
+            <input type="text" id="cargoId" placeholder="e.g., CARGO-123ABC">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" placeholder="e.g., Electronics Package">
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="In Transit">In Transit</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Processing">Processing</option>
+                <option value="On Hold">On Hold</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="weight">Weight:</label>
+            <input type="text" id="weight" placeholder="e.g., 5.2kg">
+        </div>
+        <div class="form-group">
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" placeholder="e.g., New York">
+        </div>
+        <div class="form-group">
+            <label for="sender">Sender:</label>
+            <input type="text" id="sender" placeholder="e.g., John Doe">
+        </div>
+        <button onclick="generateQR()">Generate QR Code</button>
+        <div class="preview">
+            <h3>Data Preview:</h3>
+            <pre id="jsonPreview"></pre>
+        </div>
+        <div id="qrcode"></div>
+    </div>
+
+    <script>
+        function generateQR() {
+            const data = {
+                id: document.getElementById('cargoId').value || undefined,
+                description: document.getElementById('description').value || 'No description',
+                status: document.getElementById('status').value,
+                weight: document.getElementById('weight').value,
+                destination: document.getElementById('destination').value,
+                sender: document.getElementById('sender').value
+            };
+
+            // Remove undefined fields
+            Object.keys(data).forEach(key => {
+                if (data[key] === undefined || data[key] === '') {
+                    delete data[key];
+                }
+            });
+
+            const jsonString = JSON.stringify(data, null, 2);
+            document.getElementById('jsonPreview').textContent = jsonString;
+
+            // Clear previous QR code
+            document.getElementById('qrcode').innerHTML = '';
+
+            // Generate new QR code
+            new QRCode(document.getElementById('qrcode'), {
+                text: JSON.stringify(data),
+                width: 256,
+                height: 256,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Generate a sample QR code on page load
+        window.onload = function() {
+            document.getElementById('cargoId').value = 'CARGO-123ABC';
+            document.getElementById('description').value = 'Electronics Package';
+            document.getElementById('status').value = 'In Transit';
+            document.getElementById('weight').value = '5.2kg';
+            document.getElementById('destination').value = 'New York';
+            document.getElementById('sender').value = 'John Doe';
+            generateQR();
+        };
+    </script>
+</body>
+</html>
